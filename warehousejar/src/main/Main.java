@@ -1,8 +1,18 @@
+package main;
+
+import common.Box;
+import common.Delivery;
+import services.WarehouseService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
+
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
 
@@ -15,9 +25,10 @@ public class Main {
         List<Box> listOfBoxes = new ArrayList<>(Arrays.asList(box100, box10, box200, box50, box30));
 
         WarehouseService warehouseService = new WarehouseService();
-        System.out.println(
-                warehouseService.canStore(delivery, listOfBoxes) ?
-                        "Items from provided list can be stored." :
-                        "Items from provided list cannot be stored.");
+        if (warehouseService.canStore(delivery, listOfBoxes)) {
+            LOGGER.log(Level.WARNING, "Items from provided list can be stored.");
+        } else {
+            LOGGER.log(Level.FINE, "Items from provided list cannot be stored.");
+        }
     }
 }

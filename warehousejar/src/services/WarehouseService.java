@@ -1,3 +1,7 @@
+package services;
+
+import common.Box;
+import common.Delivery;
 import vegies.Cabbage;
 import vegies.Carrot;
 import vegies.Potato;
@@ -6,8 +10,12 @@ import vegies.Vegetable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WarehouseService {
+
+    private static final Logger LOGGER = Logger.getLogger(WarehouseService.class.getName());
 
     public static final int DEFAULT_POTATO_SIZE_IN_UNITS = 1;
     public static final int DEFAULT_CARROT_SIZE_IN_UNITS = 3;
@@ -28,11 +36,17 @@ public class WarehouseService {
 
         List<Vegetable> vegetables = new ArrayList<>(Arrays.asList(potato, carrot, cabbage));
 
-        return hasEnoughSpace(boxes, vegetables);
+        return hasEnoughSpace(boxes, vegetables); // TODO: add conditions to cover other scenarios
     }
 
     private boolean hasEnoughSpace(List<Box> boxes, List<Vegetable> vegetables) {
-        return getNoOfUnitsNeeded(vegetables) <= getRemainingUnits(boxes);
+        int noOfUnitsNeeded = getNoOfUnitsNeeded(vegetables);
+        String logInfo = "Number of needed units: " + noOfUnitsNeeded;
+        LOGGER.log(Level.INFO, logInfo);
+        int remainingUnits = getRemainingUnits(boxes);
+        logInfo = "Number of remaining units: " + remainingUnits;
+        LOGGER.log(Level.INFO, logInfo);
+        return noOfUnitsNeeded <= remainingUnits;
     }
 
     private Integer getNoOfUnitsNeeded(List<Vegetable> vegetables) {
